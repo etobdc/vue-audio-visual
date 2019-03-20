@@ -92,6 +92,14 @@ const props = {
   canvFillColor: {
     type: [String, Array],
     default: null
+  },
+  /**
+   * prop: 'audio-object'
+   * Audio object/element itself.
+   */
+  audioObject: {
+    type: HTMLAudioElement,
+    default: null
   }
 }
 
@@ -109,6 +117,9 @@ const methods = {
 
     if (this.refLink) {
       audio = this.$parent.$refs[this.refLink]
+    } else if (this.audioObject) {
+      audio = this.audioObject
+      if (this.corsAnonym) audio.crossOrigin = 'anonymous'
     } else {
       audio = document.createElement('audio')
       audioDiv = document.createElement('div')
@@ -150,7 +161,7 @@ const methods = {
         ctx = new AudioContext()
         this.analyser = ctx.createAnalyser()
         src = ctx.createMediaElementSource(this.audio)
-        this.$avAudioRefs[this.refLink] = {src: src, ctx: ctx}
+        this.$avAudioRefs[this.refLink] = { src: src, ctx: ctx }
       }
     } else {
       ctx = new AudioContext()
@@ -174,7 +185,7 @@ const methods = {
     let offset = 0
     colorsArray.forEach(color => {
       gradient.addColorStop(offset, color)
-      offset += (1 / colorsArray.length)
+      offset += 1 / colorsArray.length
     })
     return gradient
   }
